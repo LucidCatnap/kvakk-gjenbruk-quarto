@@ -12,11 +12,12 @@ format:
         slideNumber: true 
         # Style
         theme: [style.scss, blood]
-        highlight-style: atom-one
+        highlight-style: tango
         code-copy: hover
         code-block-bg: true
         code-block-border-left: "#31BAE9"
         code-block-height: 900px
+        code-overflow: wrap
         incremental: true
 ---
 

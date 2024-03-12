@@ -1,7 +1,7 @@
-## 
+## {.incremental}
 
 ::: {.columns}
-::: {.column}
+::: {.column width=60%}
 ```{.python .small code-line-numbers="1-10|1|2|3,5|10|0" filename="prog/mjauvoff.py"}
 def dyr(*dyr):
     for i in dyr:
@@ -15,7 +15,7 @@ def dyr(*dyr):
 dyr("gorilla", "katt", "hund", "elefant")
 ```
 :::
-::: {.column}
+::: {.column width=40%}
 ```{.bash .small code-line-numbers="|1-5|1|2-3|4-5" filename="bash"}
 .
 ├── prog/
@@ -26,253 +26,388 @@ dyr("gorilla", "katt", "hund", "elefant")
 :::
 :::
 
+::: {.callout-caution}
+Slidene er gjenstand for grov overforenkling og inneholder definitivt feil.
+:::
+
+
 ::: notes
 Forelesningen forutsetter at du har kjennskap til noe grunnleggende Python og er kjent med Linux og dets filsystem.
 
 I kolonnen til høyre ser du en enkel Python-funksjon som tar inn en vilkårlig mengde argumenter og printer ut en lyd avhengig av hva slags dyr det er. Grunnleggende Python kommandoer vil si at man kjenner til funksjoner, løkker og betingelser.
 
 I kolonnen til venstre er en enkel mappestruktur for et Python-prosjekt. `.` markerer at vi er i rotmappen i arbeidsområdet. Under `src` ligger Python-koden, mens `notebooks` inneholder Jupyter Notebooks. `pyproject.toml` er en konfigurasjonsfil for prosjektet, mens `README.md` er en beskrivelse av prosjektet som vises på GitHub.
+
+En liten disclaimer er at undertegnede ikke har jobbet på Dapla, har ikke deployet noen applikasjoner, og kan ha mottatt noe vranglære fra en eller annen video på YouTube.
 :::
 
-## Exhibit 1: Ingen kodeprinsipper {auto-animate="true"}
+<!-- Slide 1 -->
 
-> "Lag "
-
-```{.python .small filename="kjoeringer/hele_sullamitten.py"}
+## 1. Prinsippløs koding {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+> "Ukentlig planlegging av vaffelfester er viktig for SSB. Vi har derfor laget et program som leser inn en CSV-fil med gjester, beregner hvor mye ingredienser som trengs og skriver ut en handleliste."
+```{.python .small filename="hele_sullamitten.py" code-line-numbers="1-18|1,11|3-7|9|13|15-18|1-18"}
 import csv
 
-innfil = []
+data = []
 with open('$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024/g2024m03d14_lag42.csv') as fil:
-    fil2 = csv.reader(fil, delimiter=',')
-    for rad in fil2:
-        data = rad
-
+    fil_2 = csv.reader(fil, delimiter=',')
+    for rad in fil_2:
+        data.append(rad)
+        
 count = len(mydata)
-
-vaffeljern = 0
-for navn, vaffeljern in mydata.items():
-    vaffeljern += vaffeljern
-
-# Trekker fra 1 vaffeljern (overskriftsraden i csv-filen)
-vaffeljern -= 1
-
-hvete, egg, melk, sukker, smør, kardemomme = 0.4 * count, 3 * count, 0.4 * count, 0.1 * count, 0.1 * count, 1 * count
-
-
-steketid = 3
-
-print(f"Det er totalt {count} gjester i vaffelregisteret")
-print(f"Du trenger {hvetemel} dl hvetemel, {egg} egg, {melk} dl melk, {sukker} dl sukker, {smør} dl smør og {kardemomme} ts kardemomme")
-print(f"Gjestene stiller med totalt {vaffeljern} vaffeljern")
-print(f"Med en steketid på {steketid} minutter, vil det ta {(steketid * count) / vaffeljern} minutter å steke alle vaflene")
 
 import datetime 
 
-with open("output.csv", "w") as fil:
+hvete, egg, melk = 0.4 * count, 3 * count 0.4 * count
+
+with open("$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024/handleliste.csv", "w") as fil:
     fil2 = csv.writer(fil)
-    fil2.writerow(["dato", "hvetemel", "egg", "melk", "sukker", "smør", "kardemomme", "steketid", "vaffeljern"])
-    fil2.writerow([datetime.datetime.now(), hvetemel, egg, melk, sukker, smør, kardemomme, steketid, vaffeljern])
+    fil2.writerow(["dato", "hvetemel", "egg", "melk"])
+    fil2.writerow([datetime.datetime.now(), hvetemel, egg, melk])
 ```
 
-## Beskrivende navn {auto-animate="true"}
+::: notes
+Legger man godvilja til er dette sannsynligvis noe man kan ha sett i SAS. Med "prinsippløs koding" mener jeg her at koden er skrevet uten tanke på struktur, gjenbruk og lesbarhet. 
+Koden er skrevet som en enkel skriptfil som gjør alt på en gang. Dette er en vanlig måte å skrive enkle programmer på, og er ikke noe galt i seg selv for læring og prototyping, men er vanskelig å sette seg inn i.
+:::
 
-> "Lag "
+<!-- Slide 2 -->
 
-```{.python .small filename="kjoeringer/hele_sullamitten.py"}
+## 2. Logisk struktur og variabelnavn {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+
+```{.python .small filename="hele_sullamitten.py" code-line-numbers="1-22|1-2|4-6|8-12|14|13|19-22|1-22"}
 import csv
 import datetime 
 
-PATH = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024/g2024m03d14_lag42.csv"
-antall_vaffeljern = 0
+FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
+INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
+UTFIL = f"{FILSTI}/handleliste.csv"
 
-with open(PATH) as fil:
-    fil2 = csv.reader(fil, delimiter=',')
-    for rad in fil2:
-        data = rad
+gjesteliste = []
+with open(INNFIL) as infil:
+    infil_gjesteliste = csv.reader(infil, delimiter=',')
+    for gjest in infil_gjesteliste:
+        gjesteliste.append(gjest)
 
-count = len(mydata)
-
-for navn, vaffeljern in mydata.items():
-    antall_vaffeljern += vaffeljern
-
-# Trekker fra 1 vaffeljern (overskriftsraden i csv-filen)
-antall_vaffeljern -= 1
+antall_gjester = len(gjesteliste)
 
 # Beregner ingredienser
-hvete, egg, melk, sukker, smør, kardemomme = 0.4 * count, 3 * count, 0.4 * count, 0.1 * count, 0.1 * count, 1 * count
+hvete, egg, melk = 0.4 * antall_gjester, 3 * antall_gjester 0.4 * antall_gjester
 
-# Setter steketid
-steketid = 3
-
-print(f"Det er totalt {count} gjester i vaffelregisteret")
-print(f"Du trenger {hvetemel} dl hvetemel, {egg} egg, {melk} dl melk, {sukker} dl sukker, {smør} dl smør og {kardemomme} ts kardemomme")
-print(f"Gjestene stiller med totalt {vaffeljern} vaffeljern")
-print(f"Med en steketid på {steketid} minutter, vil det ta {(steketid * count) / vaffeljern} minutter å steke alle vaflene")
-
-
-with open("output.csv", "w") as fil:
-    fil2 = csv.writer(fil)
-    fil2.writerow(["dato", "hvetemel", "egg", "melk", "sukker", "smør", "kardemomme", "steketid", "vaffeljern"])
-    fil2.writerow([datetime.datetime.now(), hvetemel, egg, melk, sukker, smør, kardemomme, steketid, vaffeljern])
+with open(UTFIL, "w") as utfil:
+    utfil_handleliste = csv.writer(utfil)
+    utfil_handleliste.writerow(["dato", "hvetemel", "egg", "melk"])
+    utfil_handleliste.writerow([datetime.datetime.now(), hvetemel, egg, melk])
 ```
 
+::: notes
+I dette eksempelet har vi gitt variablene og funksjonene mer beskrivende navn. Importer er flyttet til toppen av filen, og vi har definert noen konstanter som vi kan gjenbruke.
+:::
 
+<!-- Slide 3 -->
 
+## 3: Oppdeling i funksjoner {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
 
-## 3: Oppdeling i funksjoner {auto-animate="true"}
-
-> "Lag "
-
-```{.python .small filename="kjoeringer/hele_sullamitten.py"}
+```{.python .small filename="hele_sullamitten.py" code-line-numbers="1-31|8-15|17-20|22-26|28-31"}
 import csv
 import datetime 
 
-PATH = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024/g2024m03d14_lag42.csv"
+FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
+INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
+UTFIL = f"{FILSTI}/handleliste.csv"
 
-def les_csv():
-    with open(PATH) as fil:
+def les_csv_fra_vaffelregisteret():
+    data = []
+    with open(INNFIL) as fil:
         fil2 = csv.reader(fil, delimiter=',')
         for rad in fil2:
-            data = rad
+            data.append(rad)
+
     return data
 
 def beregn_ingredienser():
-    count = len(vaffelfil)
-    hvete, egg, melk, sukker, smør, kardemomme = 0.4 * count, 3 * count, 0.4 * count, 0.1 * count, 0.1 * count, 1 * count
-    return hvete, egg, melk, sukker, smør, kardemomme
-
-def beregn_steketid():
-    vaffeljern = -1
-    steketid = 3
-    for navn, vaffeljern in mydata.items():
-        vaffeljern += vaffeljern
-
-    steketid_totalt = (steketid * count) / vaffeljern
-    return steketid_totalt
+    antall_gjester = len(vaffelfil)
+    hvete, egg, melk = 0.4 * antall_gjester, 3 * antall_gjester, 0.4 * antall_gjester
+    return hvete, egg, melk
 
 def skriv_til_csv():
-    with open("output.csv", "w") as fil:
-        fil2 = csv.writer(fil)
-        fil2.writerow(["dato", "hvetemel", "egg", "melk", "sukker", "smør", "kardemomme", "steketid", "vaffeljern"])
-        fil2.writerow([datetime.datetime.now(), hvetemel, egg, melk, sukker, smør, kardemomme, steketid, vaffeljern])
+    with open(UTFIL, "w") as utfil:
+        utfil_handleliste = csv.writer(utfil)
+        utfil_handleliste.writerow(["dato", "hvetemel", "egg", "melk"])
+        utfil_handleliste.writerow([datetime.datetime.now(), hvetemel, egg, melk])
 
 def main():
-    vaffelfil = les_csv()
-    hvetemel, egg, melk, sukker, smør, kardemomme = beregn_ingredienser()
-    steketid = beregn_steketid()
+    vaffelfil = les_csv_fra_vaffelregisteret()
+    hvetemel, egg, melk = beregn_ingredienser()
     skriv_til_csv()
-
 ```
+::: notes
+Vi kan gjøre enda bedre ved å skille ut oppgavene i egne funksjoner. Dette gjør koden mer modulær hvor vi har oversikt over hver funksjon som har en spesifikk oppgave.
+Vi har også lagt til en `main`-funksjon som koordinerer de andre funksjonene.
 
+Dette er tiden for å begynne å tenke på å strukturere koden i moduler.
+:::
 
-
-## Parameterisering {auto-animate="true"}
-
-> "Lag "
-
-```{.python .small filename="kjoeringer/hele_sullamitten.py"}
+## 4. Skille ut i moduler {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+::: {.columns .fragment}
+::: {.column .small width=60%}
+::: {data-id="python"}
+```{.python .small filename="vaffelprosjekt/hele_sullamitten.py" code-line-numbers="1-20|8-18|20|1-20"}
 import csv
 import datetime 
 
-PATH = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024/g2024m03d14_lag42.csv"
+FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
+INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
+UTFIL = f"{FILSTI}/handleliste.csv"
 
-def les_csv(path, skilletegn = ','):
-    with open(path) as fil:
-        fil2 = csv.reader(fil, delimiter=delimiter)
-        for rad in fil2:
-            data = rad
-    return data
+def les_csv_fra_vaffelregisteret():
+    ...
 
-def beregn_ingredienser(oppskrift = {
+def beregn_ingredienser():
+    ...
+
+def skriv_til_csv():
+    ...
+
+def main():
+    ...
+
+main()
+
+```
+:::
+:::
+::: {.column width=40%}
+::: {data-id="bash"}
+```{.bash filename="Linux"}
+/vaffelprosjekt/
+├── hele_sullamitten.py
+└── pyproject.toml
+```
+:::
+:::
+:::
+
+::: notes
+I kolonnen til venstre er Python-koden oppsummert, mens høyre kolonne viser en enkel mappestruktur for prosjektet. Vi har en enkelt Python-fil og en konfigurasjonsfil for prosjektet. Hele programmet kjøres fra `hele_sullamitten.py`.
+:::
+
+<!-- Slide 4 -->
+## 4. Skille ut i moduler {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+::: {.columns}
+::: {.column .small width=60%}
+::: {data-id="python"}
+```{.python filename="vaffelprosjekt/main.py"}
+FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
+INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
+UTFIL = f"{FILSTI}/handleliste.csv"
+
+def main():
+    ...
+
+main()
+```
+:::
+:::
+::: {.column .auto-animate width=40%}
+::: {data-id="bash"}
+```{.bash filename="Linux" code-line-numbers="1-8|2|3|3-7"}
+/vaffelprosjekt/
+├── main.py
+├── funksjoner/
+│   ├── __init__.py
+│   ├── les_csv.py
+│   ├── beregn_ingredienser.py
+│   └── skriv_til_csv.py
+└── pyproject.toml
+```
+:::
+:::
+:::
+
+::: notes
+Her har jeg skilt ut funksjonene i egne moduler:
+* main.py: Hovedfilen som koordinerer de andre funksjonene
+* funksjoner/: En mappe med moduler for de andre funksjonene
+* __init__.py: En tom fil som markerer mappen som en Python-pakke
+* les_csv.py: Modul for å lese inn CSV-fil
+* beregn_ingredienser.py: Modul for å beregne ingredienser
+* skriv_til_csv.py: Modul for å skrive til CSV-fil
+* pyproject.toml: Konfigurasjonsfil for prosjektet
+:::
+
+
+## 4. Skille ut i moduler {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+::: {.columns}
+::: {.column .small width=60%}
+::: {data-id="python"}
+```{.python code-line-numbers="1-12|1|7-10|12|1-12"}
+from funksjoner import les_csv_fra_vaffelregisteret, beregn_ingredienser, skriv_til_csv
+
+FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
+INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
+UTFIL = f"{FILSTI}/handleliste.csv"
+
+def main():
+    vaffelfil = les_csv_fra_vaffelregisteret()
+    hvetemel, egg, melk = beregn_ingredienser()
+    skriv_til_csv()
+
+main()
+```
+:::
+:::
+::: {.column width=40%}
+::: {data-id="bash"}
+```{.bash filename="Linux"}
+/vaffelprosjekt/
+├── program.py
+├── funksjoner/
+│   ├── __init__.py
+│   ├── les_fil.py
+│   ├── beregn_ingredienser.py
+│   └── skriv_fil.py
+└── pyproject.toml
+```
+:::
+:::
+:::
+
+::: notes
+Ved å importere funksjonene fra `funksjoner`-mappen kan vi nå bruke dem i `main`-funksjonen. Dette gjør det mer oversiktlig, og gjemmer unødvendige detaljer fra brukeren av funksjonene.
+:::
+
+## 5. Parameterisering {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+
+```{.python .small filename="funksjoner/beregn_ingredienser.py"}
+def beregn_ingredienser():
+    antall_gjester = len(vaffelfil)
+    hvete, egg, melk = 0.4 * antall_gjester, 3 * antall_gjester, 0.4 * antall_gjester
+    return hvete, egg, melk
+```
+
+::: notes
+For å korte oss i fatthet kan vi se spesifikt på en funksjon. `beregn_ingredienser`-funksjonen gir oss som nevnt tre variabler 
+:::
+
+## 5. Parameterisering {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+
+```{.python .small filename="funksjoner/beregn_ingredienser.py"}
+def beregn_ingredienser(vaffelfil):
+    antall_gjester = len(vaffelfil)
+    hvete, egg, melk = 0.4 * antall_gjester, 3 * antall_gjester, 0.4 * antall_gjester
+    return hvete, egg, melk
+```
+
+::: notes
+Hvis vi fokuserer på `beregn_ingredienser`-funksjonen ser vi at den er avhengig av en variabel `vaffelfil` som ikke er definert i funksjonen. Vi kan gjøre funksjonen mer generell ved å sende inn `vaffelfil` som et argument.
+:::
+
+
+## 5. Parameterisering {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+
+```{.python .small filename="funksjoner/beregn_ingredienser.py" code-line-numbers="1-11|1-5|6|7-9|11|1-11"}
+def beregn_ingredienser(vaffelfil, oppskrift = {
     "hvete": 0.4,
     "egg": 3,
     "melk": 0.4,
-    "sukker": 0.1,
-    "smør": 0.1,
-    "kardemomme": 1
 }):
-    count = len(vaffelfil)
-
+    handleliste = {}
+    antall_gjester = len(vaffelfil)
     for ingrediens, mengde in oppskrift.items():
-        oppskrift[ingrediens] = mengde * count
+        handleliste[ingrediens] = mengde * antall_gjester
+    
+    return handleliste
+```
 
-def beregn_steketid():
-    vaffeljern = 0
-    for navn, vaffeljern in mydata.items():
-        vaffeljern += vaffeljern
+::: notes
+Vi kan også legge til en "oppskrift" som et valgfritt argument med en standardverdi. Her implementeres dette som en dictionary der hver ingrediens er en nøkkel og mengden er verdien. Dette gjør det enkelt å endre oppskriften uten å endre koden.
+I stedet for å hardkode oppskriften i funksjonen, kan vi sende inn oppskriften som et argument og iterere over den. Og i stedet for å returnere tre variabler, kan vi returnere en dictionary med ingrediensene og mengdene.
+:::
 
-    # Trekker fra 1 vaffeljern (overskriftsraden i csv-filen)
-    vaffeljern -= 1
+## 6. Dokumentasjon {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
 
-    steketid = 3
-    steketid_totalt = (steketid * count) / vaffeljern
-    return steketid_totalt
+```{.python .small filename="funksjoner/beregn_ingredienser.py" code-line-numbers="1-16|8-9|1-16"}
+def beregn_ingredienser(vaffelfil, oppskrift = {
+    "hvete": 0.4,
+    "egg": 3,
+    "melk": 0.4,
+}):
+    """
+    Beregner mengde ingredienser ut fra en oppskrift og antall gjester.
+    @param vaffelfil: En liste med gjester (list)
+    @param oppskrift: En oppskrift på vaffelrøre (dict)
+    """
+    handleliste = {}
+    antall_gjester = len(vaffelfil)
+    for ingrediens, mengde in oppskrift.items():
+        handleliste[ingrediens] = mengde * antall_gjester
 
-def skriv_til_csv():
-    with open("output.csv", "w") as fil:
-        fil2 = csv.writer(fil)
-        fil2.writerow(["dato", "hvetemel", "egg", "melk", "sukker", "smør", "kardemomme", "steketid", "vaffeljern"])
-        fil2.writerow([datetime.datetime.now(), hvetemel, egg, melk, sukker, smør, kardemomme, steketid, vaffeljern])
+    return handleliste
+```
+
+::: notes
+En funksjon bør også ha en beskrivelse av hva den gjør, hvilke parametre den tar inn og hva den returnerer. Dette kan gjøres med en såkalt docstring, som er en streng som står øverst i funksjonen.
+:::
+
+## 6. Dokumentasjon {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+
+```{.python .small filename="funksjoner/beregn_ingredienser.py" code-line-numbers="1-14|1,5|1-14"}
+def beregn_ingredienser(vaffelfil: list, oppskrift: dict = {
+    "hvete": 0.4,
+    "egg": 3,
+    "melk": 0.4,
+}) -> dict:
+    """
+    Beregner mengde ingredienser ut fra en oppskrift og antall gjester.
+    """
+    handleliste = {}
+    antall_gjester: int = len(vaffelfil)
+    for ingrediens, mengde in oppskrift.items():
+        handleliste[ingrediens] = mengde * antall_gjester
+    
+    return handleliste
+```
+::: notes
+Et alternativ eller supplement til docstrings er å bruke typehinting. Dette er en måte å angi hvilken type data en funksjon tar inn og returnerer. Dette er spesielt nyttig i store prosjekter der det kan være vanskelig å holde oversikt over hva slags data som sendes inn og ut av funksjoner.
+:::
+
+## Vellykket vaffelfunksjon {.incremental}
+::: {.columns}
+::: {.column .small  width=60%}
+```{.python code-line-numbers="1-16|1|7-14|9-13|14|1-16"}
+from funksjoner import les_csv, beregn_ingredienser, skriv_til_csv
+
+FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
+INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
+UTFIL = f"{FILSTI}/handleliste.csv"
 
 def main():
-    vaffelfil = les_csv()
-    hvetemel, egg, melk, sukker, smør, kardemomme = beregn_ingredienser()
-    steketid = beregn_steketid()
-    skriv_til_csv()
+    vaffelfil = les_csv_fra_vaffelregisteret(infil=INNFIL)
+    handleliste = beregn_ingredienser(vaffelfil=vaffelfil, oppskrift={
+        "glutenfritt mel": 0.4,
+        "egg": 3,
+        "melk": 0.4,
+    })
+    skriv_til_csv(utfil=UTFIL, handleliste=handleliste, som_ordbok=True)
 
-```
-
-
-## {.centered}
-
-::: {.columns}
-::: {.column}
-:::
-:::
-::: {.column}
-```{.bash .small code-line-numbers="0|1-7|1|2-5|6-7" filename="Linux/arbeidsområde"}
-$DEM
-├── data
-│   └── DEM.txt
-├── kjoeringer
-│   └── hele_sullamitten.py
-└── LES_MEG.txt
+main()
 ```
 :::
-:::
-
-## {auto-animate="true" auto-animate-easing="ease-in-out"}
-
-::: {data-id="code-example"}
-```{.python code-line-numbers="1,5|2|3-4|7|1-7"}
-def fun():
-    empty_list = []
-    for x in range(10):
-        empty_list.append(x**2)
-    return empty_list
-
-full_list = fun()
+::: {.column width=40%}
+```{.bash filename="Linux"}
+/vaffelprosjekt/
+├── main.py
+├── funksjoner/
+│   ├── __init__.py
+│   ├── les_fil.py
+│   ├── beregn_ingredienser.py
+│   └── skriv_fil.py
+└── pyproject.toml
 ```
 :::
-
-## {auto-animate="true" auto-animate-easing="ease-out"}
-
-::: {.columns}
-::: {.column data-id="code-example" auto-animate-duration="0.5" } 
-```{.python}
-def fun():
-    empty_list = []
-    for x in range(10):
-        empty_list.append(x**2)
-    return empty_list
-
-full_list = fun()
-```
 :::
 
-::: {.column auto-animate-delay="0.5"}
-```{.python}
-full_list = [x**2 for x in range(10)]
-```
-:::
+::: notes
+Summa summarum har vi nå en oversiktlig mappestruktur og en oversiktlig hovedfil. Vi har skilt ut funksjonene i egne moduler, og vi har parameterisert funksjonene slik at de er mer generelle og gjenbrukbare. Vi har også lagt til dokumentasjon og typehinting for å gjøre koden mer lesbar og forståelig. Vi har også lagt til en valgfri oppskrift slik at også cøliakiere kan feire vaffeldagen.
 :::
