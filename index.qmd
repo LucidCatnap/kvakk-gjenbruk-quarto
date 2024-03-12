@@ -70,7 +70,7 @@ Klikk på lenkene for å lese mer.
 :::
 :::
 ::: {.column .r-stretch}
-![](../assets/code_reuse.png){fig-align="center" fig-alt="Bilde av gjenbrukssymbol rundt symbol for koding" width=700 height=700}
+![](./assets/code_reuse.png){fig-align="center" fig-alt="Bilde av gjenbrukssymbol rundt symbol for koding" width=700 height=700}
 :::
 :::
 
