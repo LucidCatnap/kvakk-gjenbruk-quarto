@@ -1,0 +1,133 @@
+---
+pagetitle: "Presentasjon av KVAKK---- Gjenbruk i egen kode"
+format:
+    revealjs:
+        # Size
+        height: 1080
+        width: 1920
+        # Resources
+        # Code
+        code-line-numbers: true
+        # Misc
+        slideNumber: true 
+        # Style
+        theme: [style.scss, blood]
+        highlight-style: atom-one
+        code-copy: hover
+        code-block-bg: true
+        code-block-border-left: "#31BAE9"
+        code-block-height: 900px
+        incremental: true
+        embed-resources: true
+---
+
+<!-- Slide 1 - Opening slide -->
+# Gjenbruk i egen kode {.title-middle-dark}
+
+<!-- Slide 2 - KVAKK - Best practice -->
+## Beste praksis {.centered .smaller}
+
+Besøk KVAKK-siden for å se på alle anbefalingene knyttet til kode og koding
+
+![🦆](assets/kvakk_gjenbruk-i-egen-kode-1.png){fig-align="center" fig-alt="Bilde av KVAKK-gruppens side om gjenbruk i egen kode"}
+
+::: footer
+Klikk [her](<https://statistics-norway.atlassian.net/wiki/x/I4BI0g>) for KVAKKs side om gjenbruk.  <br>
+Klikk [her](<https://statistics-norway.atlassian.net/wiki/x/tQBm1>) for beste praksis ved gjenbruk <br>
+Klikk [her](<https://statistics-norway.atlassian.net/wiki/x/xACJ1>) for å lese om SonarCloud       <br>
+:::
+
+::: notes
+KVAKK-gruppen har lagt ned arbeid i å samle beste praksis for gjenbruk. Dette er en del av et større arbeid for å samle beste praksis for arbeid i SSB.
+
+I tillegg til KVAKKs side om gjenbruk, finnes det også en side om beste praksis ved gjenbruk i egen kode og en side om SonarCloud - et verktøy for å finne kodefeil og sikkerhetsproblemer i koden.
+
+Klikk på lenkene for å lese mer.
+:::
+
+<!-- Slide 3 - Benefits of reuse  -->
+## Gjenbruk i egen kode
+
+::: {.columns .incremental}
+::: {.column}
+::: {.smaller}
+
+(@) 🚨 ___Gjenbruk kan redusere feil___
+
+    Kode skrevet i henhold til beste praksis skal testes og fungere som forventet. Ved å gjenbruke kode som er testet og fungerer, kan du redusere risikoen for feil.
+
+(@) 🚀 ___Gjenbruk kan øke produktiviteten___
+
+    Gjenbruk kan redusere utviklingstid, og fordi `⌛ == 💰`  kan man oppnå reduserte kostnader 
+
+(@) 🦆 ___Gjenbruk kan øke kvaliteten på koden___
+
+    Har du en funksjon som fungerte bra i et tidligere prosjekt? Hvorfor ikke utvide og bruke den igjen?
+
+(@) 🧩 ___Gjenbruk kan redusere kompleksitet___
+
+    Ved å bryte ned store oppgaver i mindre deler, dokumentere bestandelene, og sette de logisk sammen igjen, er koden mer oversiktlig for deg og dine kjære kolleger.
+:::
+:::
+::: {.column .r-stretch}
+![](../assets/code_reuse.png){fig-align="center" fig-alt="Bilde av gjenbrukssymbol rundt symbol for koding" width=700 height=700}
+:::
+:::
+
+<!-- KVAKK recommendations -->
+## Ti punkter om gjenbruk i egen kode
+
+::: {.columns}
+<!-- Venstrekolonne -->
+::: {.column}
+::: {.width-50}
+1. Oppdeling
+2. Bruk beskrivende navn
+3. Gjør funksjoner generiske der det er hensiktsmessig
+4. Dokumentasjon
+5. Parameterisering
+:::
+:::
+<!-- Høyrekolonne -->
+::: {.column}
+6. Unngå sideeffekter
+7. Enhetstesting
+8. Dekomponering av store oppgaver
+9. Modulorganisering
+10. Bruk av `__init__.py`
+:::
+::: 
+
+::: {.centered .fragment style="margin-top: 100px; font-size: 3em; color: red;"}
+11. Standardisering
+:::
+
+::: notes
+
+(1) Oppdeling -  Del opp koden i logisk sammenhengende funksjoner. Hver funksjon bør utføre en bestemt oppgave eller ha et bestemt ansvarsområde. Dette gjør koden enklere å forstå og vedlikeholde.
+
+(2) Bruk beskrivende navn - Gi funksjoner (og variabler) beskrivende navn som tydelig indikerer hva de gjør. Dette gjør koden mer selvforklarende og hjelper andre med å forstå hensikten til funksjonen.
+
+(3) Gjør funksjoner generiske der det hensiktsmessig - Lag generiske funksjoner der det er hensiktsmessig. Ikke bruk hardkodede verdier og avhengigheter som begrenser bruken av funksjonen. Dette gjør funksjonen mer gjenbrukbar i ulike kontekster.
+
+(4) Dokumentasjon - Legg til kommentarer og dokumentasjon i funksjoner for å forklare hvordan de skal brukes, hvilke argumenter de tar imot, og hva de returnerer. Dette hjelper andre utviklere og deg selv med å bruke funksjonene riktig.
+
+(5) Parameterisering - Tillat funksjoner å være parametriske ved å ta inn argumenter. Dette gjør det mulig å tilpasse funksjonenes atferd ved å endre inndata.
+
+(6) Unngå sideeffekter - Unngå sideeffekter i funksjoner, dvs. endringer i globale tilstander eller variabler utenfor funksjonens omfang. Dette bidrar til å gjøre funksjoner mer forutsigbare og testbare.
+
+(7) Enhetstesting - Lag enhetstester for funksjonene dine. Dette sikrer at de fungerer som forventet, og at endringer i koden ikke introduserer feil.
+
+(8) Dekomponering av store oppgaver - Hvis en funksjon blir for stor eller kompleks, bør du vurdere å dele den opp i mindre funksjoner. Dette bidrar til å forbedre lesbarheten og vedlikeholdbarheten.
+
+(9) Modulorganisering - Organiser relaterte funksjoner i moduler/filer og pakk dem i kataloger etter behov. Dette gir en strukturert tilnærming til gjenbruk av kode.
+
+(10) Bruk av __init__.py - Hvis du lager en mappe for en pakke med flere moduler, må du inkludere en __init__.py-fil i mappen. Dette gjør mappen til en pakke som kan importeres som en enhet.
+:::
+
+<!-- Import slides component -->
+{{< include slides/kvakk-anbefalinger.qmd >}}
+
+
+# Takk for meg! {.centered}
+

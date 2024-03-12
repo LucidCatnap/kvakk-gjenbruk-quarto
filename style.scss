@@ -1,0 +1,30 @@
+/*-- scss:defaults --*/
+$presentation-heading-color: #75AADB;
+$link-color: #75AADB;
+$code-block-font-size: 0.8em;
+
+/*-- scss:rules --*/
+.reveal .centered {
+    text-align: center;
+}
+
+.reveal .larger {
+    font-size: 3em;
+}
+
+
+.reveal .large {
+    font-size: 1.5em;
+}
+
+.reveal .small {
+    font-size: 0.75em;
+}
+
+.reveal .title-middle-dark h1 {
+    color: #9CE0F6;
+    font-size: 3em;
+    position: absolute; 
+    left: 5px; 
+    top: 0px
+}

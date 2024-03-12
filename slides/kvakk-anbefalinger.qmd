@@ -1,0 +1,278 @@
+## 
+
+::: {.columns}
+::: {.column}
+```{.python .small code-line-numbers="1-10|1|2|3,5|10|0" filename="prog/mjauvoff.py"}
+def dyr(*dyr):
+    for i in dyr:
+        if i == 'katt':
+            print('Mjau')
+        elif i == 'hund':
+            print('VOF')
+        else:
+            print(f"{i} sier hverken mjau eller vof")
+
+dyr("gorilla", "katt", "hund", "elefant")
+```
+:::
+::: {.column}
+```{.bash .small code-line-numbers="|1-5|1|2-3|4-5" filename="bash"}
+.
+├── prog/
+│   └── mjauvoff.py
+├── pyproject.toml
+└── README.md
+```
+:::
+:::
+
+::: notes
+Forelesningen forutsetter at du har kjennskap til noe grunnleggende Python og er kjent med Linux og dets filsystem.
+
+I kolonnen til høyre ser du en enkel Python-funksjon som tar inn en vilkårlig mengde argumenter og printer ut en lyd avhengig av hva slags dyr det er. Grunnleggende Python kommandoer vil si at man kjenner til funksjoner, løkker og betingelser.
+
+I kolonnen til venstre er en enkel mappestruktur for et Python-prosjekt. `.` markerer at vi er i rotmappen i arbeidsområdet. Under `src` ligger Python-koden, mens `notebooks` inneholder Jupyter Notebooks. `pyproject.toml` er en konfigurasjonsfil for prosjektet, mens `README.md` er en beskrivelse av prosjektet som vises på GitHub.
+:::
+
+## Exhibit 1: Ingen kodeprinsipper {auto-animate="true"}
+
+> "Lag "
+
+```{.python .small filename="kjoeringer/hele_sullamitten.py"}
+import csv
+
+innfil = []
+with open('$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024/g2024m03d14_lag42.csv') as fil:
+    fil2 = csv.reader(fil, delimiter=',')
+    for rad in fil2:
+        data = rad
+
+count = len(mydata)
+
+vaffeljern = 0
+for navn, vaffeljern in mydata.items():
+    vaffeljern += vaffeljern
+
+# Trekker fra 1 vaffeljern (overskriftsraden i csv-filen)
+vaffeljern -= 1
+
+hvete, egg, melk, sukker, smør, kardemomme = 0.4 * count, 3 * count, 0.4 * count, 0.1 * count, 0.1 * count, 1 * count
+
+
+steketid = 3
+
+print(f"Det er totalt {count} gjester i vaffelregisteret")
+print(f"Du trenger {hvetemel} dl hvetemel, {egg} egg, {melk} dl melk, {sukker} dl sukker, {smør} dl smør og {kardemomme} ts kardemomme")
+print(f"Gjestene stiller med totalt {vaffeljern} vaffeljern")
+print(f"Med en steketid på {steketid} minutter, vil det ta {(steketid * count) / vaffeljern} minutter å steke alle vaflene")
+
+import datetime 
+
+with open("output.csv", "w") as fil:
+    fil2 = csv.writer(fil)
+    fil2.writerow(["dato", "hvetemel", "egg", "melk", "sukker", "smør", "kardemomme", "steketid", "vaffeljern"])
+    fil2.writerow([datetime.datetime.now(), hvetemel, egg, melk, sukker, smør, kardemomme, steketid, vaffeljern])
+```
+
+## Beskrivende navn {auto-animate="true"}
+
+> "Lag "
+
+```{.python .small filename="kjoeringer/hele_sullamitten.py"}
+import csv
+import datetime 
+
+PATH = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024/g2024m03d14_lag42.csv"
+antall_vaffeljern = 0
+
+with open(PATH) as fil:
+    fil2 = csv.reader(fil, delimiter=',')
+    for rad in fil2:
+        data = rad
+
+count = len(mydata)
+
+for navn, vaffeljern in mydata.items():
+    antall_vaffeljern += vaffeljern
+
+# Trekker fra 1 vaffeljern (overskriftsraden i csv-filen)
+antall_vaffeljern -= 1
+
+# Beregner ingredienser
+hvete, egg, melk, sukker, smør, kardemomme = 0.4 * count, 3 * count, 0.4 * count, 0.1 * count, 0.1 * count, 1 * count
+
+# Setter steketid
+steketid = 3
+
+print(f"Det er totalt {count} gjester i vaffelregisteret")
+print(f"Du trenger {hvetemel} dl hvetemel, {egg} egg, {melk} dl melk, {sukker} dl sukker, {smør} dl smør og {kardemomme} ts kardemomme")
+print(f"Gjestene stiller med totalt {vaffeljern} vaffeljern")
+print(f"Med en steketid på {steketid} minutter, vil det ta {(steketid * count) / vaffeljern} minutter å steke alle vaflene")
+
+
+with open("output.csv", "w") as fil:
+    fil2 = csv.writer(fil)
+    fil2.writerow(["dato", "hvetemel", "egg", "melk", "sukker", "smør", "kardemomme", "steketid", "vaffeljern"])
+    fil2.writerow([datetime.datetime.now(), hvetemel, egg, melk, sukker, smør, kardemomme, steketid, vaffeljern])
+```
+
+
+
+
+## 3: Oppdeling i funksjoner {auto-animate="true"}
+
+> "Lag "
+
+```{.python .small filename="kjoeringer/hele_sullamitten.py"}
+import csv
+import datetime 
+
+PATH = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024/g2024m03d14_lag42.csv"
+
+def les_csv():
+    with open(PATH) as fil:
+        fil2 = csv.reader(fil, delimiter=',')
+        for rad in fil2:
+            data = rad
+    return data
+
+def beregn_ingredienser():
+    count = len(vaffelfil)
+    hvete, egg, melk, sukker, smør, kardemomme = 0.4 * count, 3 * count, 0.4 * count, 0.1 * count, 0.1 * count, 1 * count
+    return hvete, egg, melk, sukker, smør, kardemomme
+
+def beregn_steketid():
+    vaffeljern = -1
+    steketid = 3
+    for navn, vaffeljern in mydata.items():
+        vaffeljern += vaffeljern
+
+    steketid_totalt = (steketid * count) / vaffeljern
+    return steketid_totalt
+
+def skriv_til_csv():
+    with open("output.csv", "w") as fil:
+        fil2 = csv.writer(fil)
+        fil2.writerow(["dato", "hvetemel", "egg", "melk", "sukker", "smør", "kardemomme", "steketid", "vaffeljern"])
+        fil2.writerow([datetime.datetime.now(), hvetemel, egg, melk, sukker, smør, kardemomme, steketid, vaffeljern])
+
+def main():
+    vaffelfil = les_csv()
+    hvetemel, egg, melk, sukker, smør, kardemomme = beregn_ingredienser()
+    steketid = beregn_steketid()
+    skriv_til_csv()
+
+```
+
+
+
+## Parameterisering {auto-animate="true"}
+
+> "Lag "
+
+```{.python .small filename="kjoeringer/hele_sullamitten.py"}
+import csv
+import datetime 
+
+PATH = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024/g2024m03d14_lag42.csv"
+
+def les_csv(path, skilletegn = ','):
+    with open(path) as fil:
+        fil2 = csv.reader(fil, delimiter=delimiter)
+        for rad in fil2:
+            data = rad
+    return data
+
+def beregn_ingredienser(oppskrift = {
+    "hvete": 0.4,
+    "egg": 3,
+    "melk": 0.4,
+    "sukker": 0.1,
+    "smør": 0.1,
+    "kardemomme": 1
+}):
+    count = len(vaffelfil)
+
+    for ingrediens, mengde in oppskrift.items():
+        oppskrift[ingrediens] = mengde * count
+
+def beregn_steketid():
+    vaffeljern = 0
+    for navn, vaffeljern in mydata.items():
+        vaffeljern += vaffeljern
+
+    # Trekker fra 1 vaffeljern (overskriftsraden i csv-filen)
+    vaffeljern -= 1
+
+    steketid = 3
+    steketid_totalt = (steketid * count) / vaffeljern
+    return steketid_totalt
+
+def skriv_til_csv():
+    with open("output.csv", "w") as fil:
+        fil2 = csv.writer(fil)
+        fil2.writerow(["dato", "hvetemel", "egg", "melk", "sukker", "smør", "kardemomme", "steketid", "vaffeljern"])
+        fil2.writerow([datetime.datetime.now(), hvetemel, egg, melk, sukker, smør, kardemomme, steketid, vaffeljern])
+
+def main():
+    vaffelfil = les_csv()
+    hvetemel, egg, melk, sukker, smør, kardemomme = beregn_ingredienser()
+    steketid = beregn_steketid()
+    skriv_til_csv()
+
+```
+
+
+## {.centered}
+
+::: {.columns}
+::: {.column}
+:::
+:::
+::: {.column}
+```{.bash .small code-line-numbers="0|1-7|1|2-5|6-7" filename="Linux/arbeidsområde"}
+$DEM
+├── data
+│   └── DEM.txt
+├── kjoeringer
+│   └── hele_sullamitten.py
+└── LES_MEG.txt
+```
+:::
+:::
+
+## {auto-animate="true" auto-animate-easing="ease-in-out"}
+
+::: {data-id="code-example"}
+```{.python code-line-numbers="1,5|2|3-4|7|1-7"}
+def fun():
+    empty_list = []
+    for x in range(10):
+        empty_list.append(x**2)
+    return empty_list
+
+full_list = fun()
+```
+:::
+
+## {auto-animate="true" auto-animate-easing="ease-out"}
+
+::: {.columns}
+::: {.column data-id="code-example" auto-animate-duration="0.5" } 
+```{.python}
+def fun():
+    empty_list = []
+    for x in range(10):
+        empty_list.append(x**2)
+    return empty_list
+
+full_list = fun()
+```
+:::
+
+::: {.column auto-animate-delay="0.5"}
+```{.python}
+full_list = [x**2 for x in range(10)]
+```
+:::
+:::
