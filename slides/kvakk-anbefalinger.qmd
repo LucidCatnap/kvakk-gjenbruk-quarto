@@ -43,7 +43,7 @@ En liten disclaimer er at undertegnede ikke har jobbet på Dapla, har ikke deplo
 
 <!-- Slide 1 -->
 
-## 1. Prinsippløs koding {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+## 1. Prinsippløs koding {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1" data-menu-title="Koding uten prinsippene"}
 > "Ukentlig planlegging av vaffelfester er viktig for SSB. Vi har derfor laget et program som leser inn en CSV-fil med gjester, beregner hvor mye ingredienser som trengs og skriver ut en handleliste."
 ```{.python .small filename="hele_sullamitten.py" code-line-numbers="1-18|1,11|3-7|9|13|15-18|1-18"}
 import csv
@@ -73,9 +73,9 @@ Koden er skrevet som en enkel skriptfil som gjør alt på en gang. Dette er en v
 
 <!-- Slide 2 -->
 
-## 2. Logisk struktur og variabelnavn {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+## 2. Logisk struktur og variabelnavn {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1" data-menu-title="(1) Navn, oppdeling, og struktur"}
 
-```{.python .small filename="hele_sullamitten.py" code-line-numbers="1-22|1-2|4-6|8-12|14|13|19-22|1-22"}
+```{.python .small filename="hele_sullamitten.py" code-line-numbers="1-22|1-2|4-6|8-12|14,17|19-22|1-22"}
 import csv
 import datetime 
 
@@ -106,7 +106,7 @@ I dette eksempelet har vi gitt variablene og funksjonene mer beskrivende navn. I
 
 <!-- Slide 3 -->
 
-## 3: Oppdeling i funksjoner {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+## 3: Oppdeling i funksjoner {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1" data-menu-title="(2) Funksjoner"}
 
 ```{.python .small filename="hele_sullamitten.py" code-line-numbers="1-31|8-15|17-20|22-26|28-31"}
 import csv
@@ -148,7 +148,7 @@ Vi har også lagt til en `main`-funksjon som koordinerer de andre funksjonene.
 Dette er tiden for å begynne å tenke på å strukturere koden i moduler.
 :::
 
-## 4. Skille ut i moduler {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+## 4. Skille ut i moduler {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1" data-menu-title="Moduler I"}
 ::: {.columns .fragment}
 ::: {.column .small width=60%}
 ::: {data-id="python"}
@@ -160,7 +160,7 @@ FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
 INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
 UTFIL = f"{FILSTI}/handleliste.csv"
 
-def les_csv_fra_vaffelregisteret():
+def les_csv():
     ...
 
 def beregn_ingredienser():
@@ -193,7 +193,7 @@ I kolonnen til venstre er Python-koden oppsummert, mens høyre kolonne viser en 
 :::
 
 <!-- Slide 4 -->
-## 4. Skille ut i moduler {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+## 4. Skille ut i moduler {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1" data-menu-title="Moduler II"}
 ::: {.columns}
 ::: {.column .small width=60%}
 ::: {data-id="python"}
@@ -237,12 +237,12 @@ Her har jeg skilt ut funksjonene i egne moduler:
 :::
 
 
-## 4. Skille ut i moduler {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+## 4. Skille ut i moduler {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1" data-menu-title="Moduler III"}
 ::: {.columns}
 ::: {.column .small width=60%}
 ::: {data-id="python"}
 ```{.python code-line-numbers="1-12|1|7-10|12|1-12"}
-from funksjoner import les_csv_fra_vaffelregisteret, beregn_ingredienser, skriv_til_csv
+from funksjoner import les_csv, beregn_ingredienser, skriv_til_csv
 
 FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
 INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
@@ -277,7 +277,7 @@ main()
 Ved å importere funksjonene fra `funksjoner`-mappen kan vi nå bruke dem i `main`-funksjonen. Dette gjør det mer oversiktlig, og gjemmer unødvendige detaljer fra brukeren av funksjonene.
 :::
 
-## 5. Parameterisering {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+## 5. Parameterisering {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1" data-menu-title="Parameterisering I"} 
 
 ```{.python .small filename="funksjoner/beregn_ingredienser.py"}
 def beregn_ingredienser():
@@ -304,7 +304,7 @@ Hvis vi fokuserer på `beregn_ingredienser`-funksjonen ser vi at den er avhengig
 :::
 
 
-## 5. Parameterisering {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+## 5. Parameterisering {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1" data-menu-title="Parameterisering II"}
 
 ```{.python .small filename="funksjoner/beregn_ingredienser.py" code-line-numbers="1-11|1-5|6|7-9|11|1-11"}
 def beregn_ingredienser(vaffelfil, oppskrift = {
@@ -325,7 +325,7 @@ Vi kan også legge til en "oppskrift" som et valgfritt argument med en standardv
 I stedet for å hardkode oppskriften i funksjonen, kan vi sende inn oppskriften som et argument og iterere over den. Og i stedet for å returnere tre variabler, kan vi returnere en dictionary med ingrediensene og mengdene.
 :::
 
-## 6. Dokumentasjon {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+## 6. Dokumentasjon {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1" data-menu-title="Dokumentasjon I"}
 
 ```{.python .small filename="funksjoner/beregn_ingredienser.py" code-line-numbers="1-16|8-9|1-16"}
 def beregn_ingredienser(vaffelfil, oppskrift = {
@@ -350,7 +350,7 @@ def beregn_ingredienser(vaffelfil, oppskrift = {
 En funksjon bør også ha en beskrivelse av hva den gjør, hvilke parametre den tar inn og hva den returnerer. Dette kan gjøres med en såkalt docstring, som er en streng som står øverst i funksjonen.
 :::
 
-## 6. Dokumentasjon {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+## 6. Dokumentasjon {auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1" data-menu-title="Dokumentasjon II"}
 
 ```{.python .small filename="funksjoner/beregn_ingredienser.py" code-line-numbers="1-14|1,5|1-14"}
 def beregn_ingredienser(vaffelfil: list, oppskrift: dict = {
@@ -372,7 +372,7 @@ def beregn_ingredienser(vaffelfil: list, oppskrift: dict = {
 Et alternativ eller supplement til docstrings er å bruke typehinting. Dette er en måte å angi hvilken type data en funksjon tar inn og returnerer. Dette er spesielt nyttig i store prosjekter der det kan være vanskelig å holde oversikt over hva slags data som sendes inn og ut av funksjoner.
 :::
 
-## Vellykket vaffelfunksjon {.incremental}
+## Vellykket vaffelfunksjon {.incremental data-menu-title="Vellykket vaffelfunksjon I"}
 ::: {.columns}
 ::: {.column .small  width=60%}
 ```{.python code-line-numbers="1-16|1|7-14|9-13|14|1-16"}
@@ -383,7 +383,7 @@ INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
 UTFIL = f"{FILSTI}/handleliste.csv"
 
 def main():
-    vaffelfil = les_csv_fra_vaffelregisteret(infil=INNFIL)
+    vaffelfil = les_csv(infil=INNFIL)
     handleliste = beregn_ingredienser(vaffelfil=vaffelfil, oppskrift={
         "glutenfritt mel": 0.4,
         "egg": 3,
@@ -410,4 +410,121 @@ main()
 
 ::: notes
 Summa summarum har vi nå en oversiktlig mappestruktur og en oversiktlig hovedfil. Vi har skilt ut funksjonene i egne moduler, og vi har parameterisert funksjonene slik at de er mer generelle og gjenbrukbare. Vi har også lagt til dokumentasjon og typehinting for å gjøre koden mer lesbar og forståelig. Vi har også lagt til en valgfri oppskrift slik at også cøliakiere kan feire vaffeldagen.
+:::
+
+## Vellykket vaffelfunksjon {.incremental data-menu-title="Vellykket vaffelfunksjon II" auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+::: {.columns}
+::: {.column .small  width=60%}
+```{.python}
+from funksjoner import les_csv, beregn_ingredienser, skriv_til_csv
+
+FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
+INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
+UTFIL = f"{FILSTI}/handleliste.csv"
+
+def main():
+    vaffelfil = les_csv(infil=INNFIL)
+    handleliste = beregn_ingredienser(vaffelfil=vaffelfil, oppskrift={
+        "glutenfritt mel": 0.4,
+        "egg": 3,
+        "melk": 0.4,
+    })
+    skriv_til_csv(utfil=UTFIL, handleliste=handleliste, som_ordbok=True)
+
+main()
+```
+:::
+::: {.column width=40% data-id="bash"}
+```{.bash filename="Linux"}
+/vaffelprosjekt/
+├── main.py
+├── funksjoner/
+│   ├── __init__.py
+│   ├── les_fil.py
+│   ├── beregn_ingredienser.py
+│   └── skriv_fil.py
+└── pyproject.toml
+```
+:::
+:::
+
+## Tester? {.incremental data-menu-title="Tester" auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
+::: {.columns}
+::: {.column .small  width=60%}
+```{.python code-line-numbers="1-16|1|7-14|9-13|14|1-16"}
+from funksjoner import les_csv, beregn_ingredienser, skriv_til_csv
+
+FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
+INNFIL = f"{FILSTI}/g2024m03d14_lag42.csv"
+UTFIL = f"{FILSTI}/handleliste.csv"
+
+def main():
+    vaffelfil = les_csv(infil=INNFIL)
+    handleliste = beregn_ingredienser(vaffelfil=vaffelfil, oppskrift={
+        "glutenfritt mel": 0.4,
+        "egg": 3,
+        "melk": 0.4,
+    })
+    skriv_til_csv(utfil=UTFIL, handleliste=handleliste, som_ordbok=True)
+
+main()
+```
+:::
+::: {.column width=40% data-id="bash"}
+```{.bash filename="Linux"}
+/vaffelprosjekt/
+├── main.py
+├── funksjoner/
+│   ├── __init__.py
+│   ├── les_fil.py
+│   ├── beregn_ingredienser.py
+│   └── skriv_fil.py
+├── tests/
+│   ├── __init__.py
+│   ├── test_les_fil.py
+│   ├── test_beregn_ingredienser.py
+│   └── test_skriv_fil.py
+├── README.md/
+└── pyproject.toml
+```
+:::
+:::
+
+::: notes
+Når vi har en funksjon som fungerer som den skal, kan vi skrive tester for å sjekke at funksjonen oppfører seg som forventet. Dette gjør det enklere å finne feil og endre koden uten å ødelegge noe som allerede fungerer. Jeg skal ikke gå inn på noen eksakte eksempler på tester nå, men det er viktig å bli nevnt.
+:::
+
+
+##  {.incremental data-menu-title="Annet"}
+::: {.columns}
+::: {.column .large  width=60%}
+### Annet?
+* Generisk funksjonalitet
+* SonarCloud code review
+* Beste praksis fra funksjonell og objektorientert programmering
+
+> Jo mer man lærer, jo mer vet man
+:::
+::: {.column width=40%}
+```{.bash filename="Linux"}
+/vaffelprosjekt/
+├── main.py
+├── funksjoner/
+│   ├── __init__.py
+│   ├── les_fil.py
+│   ├── beregn_ingredienser.py
+│   └── skriv_fil.py
+├── tests/
+│   ├── __init__.py
+│   ├── test_les_fil.py
+│   ├── test_beregn_ingredienser.py
+│   └── test_skriv_fil.py
+├── README.md/
+└── pyproject.toml
+```
+:::
+:::
+
+::: notes
+Andre ting som kan være nyttig å nevne er generisk funksjonalitet, SonarCloud kodeverktøy, og beste praksis fra funksjonell og objektorientert programmering. Med andre ord, god praksis for koding øker med erfaring og kunnskap. Det kan f.eks. være nyttig å lære både R og Python for å få et bredere perspektiv på programmering.
 :::
