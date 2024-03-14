@@ -12,7 +12,7 @@ format:
         slideNumber: true 
         # Style
         theme: [style.scss, blood]
-        highlight-style: tango
+        highlight-style: oblivion
         code-copy: hover
         code-block-bg: true
         code-block-border-left: "#31BAE9"

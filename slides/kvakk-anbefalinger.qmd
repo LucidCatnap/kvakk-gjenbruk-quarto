@@ -451,7 +451,7 @@ main()
 ## Tester? {.incremental data-menu-title="Tester" auto-animate="true" auto-animate-easing="ease" auto-animate-duration="1"}
 ::: {.columns}
 ::: {.column .small  width=60%}
-```{.python code-line-numbers="1-16|1|7-14|9-13|14|1-16"}
+```{.python}
 from funksjoner import les_csv, beregn_ingredienser, skriv_til_csv
 
 FILSTI = f"$VAFFELREGISTERET/a300/statistikkfil/wk48/vaffelfester/g2024"
